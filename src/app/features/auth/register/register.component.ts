@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -7,9 +7,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthService } from '../../../core/services/auth.service';
+import { PlatformService } from '../../../core/services/platform.service';
+import { Platform } from '../../../core/models/platform.model';
 
 @Component({
   selector: 'app-register',
@@ -23,6 +26,7 @@ import { AuthService } from '../../../core/services/auth.service';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    MatSelectModule,
     MatSnackBarModule,
     MatProgressSpinnerModule
   ],
@@ -130,6 +134,20 @@ import { AuthService } from '../../../core/services/auth.service';
               }
               @if (registerForm.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched) {
                 <mat-error>Passwords do not match</mat-error>
+              }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Platform</mat-label>
+              <mat-select formControlName="platformId">
+                <mat-option value="">-- Select Platform --</mat-option>
+                @for (platform of platforms(); track platform.platformId) {
+                  <mat-option [value]="platform.platformId">{{ platform.name }}</mat-option>
+                }
+              </mat-select>
+              <mat-icon matPrefix>business</mat-icon>
+              @if (registerForm.get('platformId')?.hasError('required') && registerForm.get('platformId')?.touched) {
+                <mat-error>Platform is required</mat-error>
               }
             </mat-form-field>
 
@@ -310,15 +328,18 @@ import { AuthService } from '../../../core/services/auth.service';
     }
   `]
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   hidePassword = signal(true);
   hideConfirmPassword = signal(true);
   loading = signal(false);
+  platforms = signal<Platform[]>([]);
+  loadingPlatforms = signal(true);
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
+    private platformService: PlatformService,
     private router: Router,
     private snackBar: MatSnackBar
   ) {
@@ -332,8 +353,26 @@ export class RegisterComponent {
         Validators.minLength(8),
         Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/)
       ]],
-      confirmPassword: ['', [Validators.required]]
+      confirmPassword: ['', [Validators.required]],
+      platformId: ['', [Validators.required]]
     }, { validators: this.passwordMatchValidator });
+  }
+
+  ngOnInit(): void {
+    this.loadPlatforms();
+  }
+
+  loadPlatforms(): void {
+    this.platformService.getPlatforms().subscribe({
+      next: (platforms) => {
+        this.platforms.set(platforms);
+        this.loadingPlatforms.set(false);
+      },
+      error: (error) => {
+        this.snackBar.open('Failed to load platforms', 'Close', { duration: 3000 });
+        this.loadingPlatforms.set(false);
+      }
+    });
   }
 
   passwordMatchValidator(control: AbstractControl): ValidationErrors | null {

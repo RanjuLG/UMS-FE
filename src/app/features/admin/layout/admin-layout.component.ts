@@ -7,6 +7,7 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatDividerModule } from '@angular/material/divider';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
@@ -20,7 +21,8 @@ import { AuthService } from '../../../core/services/auth.service';
     MatListModule,
     MatIconModule,
     MatButtonModule,
-    MatMenuModule
+    MatMenuModule,
+    MatDividerModule
   ],
   template: `
     <div class="admin-layout">
@@ -58,9 +60,14 @@ import { AuthService } from '../../../core/services/auth.service';
           [mode]="sidenavMode()" 
           class="sidenav">
           <mat-nav-list>
-            <a mat-list-item routerLink="/admin/dashboard" routerLinkActive="active">
+            <a mat-list-item routerLink="/dashboard" class="back-link">
+              <mat-icon matListItemIcon>arrow_back</mat-icon>
+              <span matListItemTitle>Back to Platforms</span>
+            </a>
+            <mat-divider style="margin: 12px 0;"></mat-divider>
+            <a mat-list-item routerLink="/admin/ums" routerLinkActive="active">
               <mat-icon matListItemIcon>dashboard</mat-icon>
-              <span matListItemTitle>Dashboard</span>
+              <span matListItemTitle>UMS Dashboard</span>
             </a>
             <a mat-list-item routerLink="/admin/users" routerLinkActive="active">
               <mat-icon matListItemIcon>people</mat-icon>
@@ -187,6 +194,25 @@ import { AuthService } from '../../../core/services/auth.service';
 
     ::ng-deep mat-nav-list a:hover:not(.active) .mat-icon {
       color: #3b82f6;
+    }
+
+    ::ng-deep mat-nav-list a.back-link {
+      color: #64748b;
+      font-weight: 500;
+      background-color: #f8fafc;
+    }
+
+    ::ng-deep mat-nav-list a.back-link:hover {
+      background-color: #e2e8f0;
+      color: #1e293b;
+    }
+
+    ::ng-deep mat-nav-list a.back-link .mat-icon {
+      color: #64748b;
+    }
+
+    ::ng-deep mat-nav-list a.back-link:hover .mat-icon {
+      color: #1e293b;
     }
 
     .user-info {

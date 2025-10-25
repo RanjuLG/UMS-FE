@@ -69,6 +69,13 @@ import { UserRolesDialogComponent } from './user-roles-dialog.component';
               <td mat-cell *matCellDef="let user">{{ user.email }}</td>
             </ng-container>
 
+            <ng-container matColumnDef="platform">
+              <th mat-header-cell *matHeaderCellDef>Platform</th>
+              <td mat-cell *matCellDef="let user">
+                <mat-chip class="platform-chip">{{ user.platformName }}</mat-chip>
+              </td>
+            </ng-container>
+
             <ng-container matColumnDef="roles">
               <th mat-header-cell *matHeaderCellDef>Roles</th>
               <td mat-cell *matCellDef="let user">
@@ -201,6 +208,16 @@ import { UserRolesDialogComponent } from './user-roles-dialog.component';
       border: 1px solid #bfdbfe;
     }
 
+    ::ng-deep mat-chip.platform-chip {
+      font-size: 12px;
+      min-height: 28px;
+      padding: 4px 12px;
+      background-color: #f0fdf4;
+      color: #16a34a;
+      font-weight: 500;
+      border: 1px solid #bbf7d0;
+    }
+
     .no-roles {
       font-size: 13px;
       color: #94a3b8;
@@ -262,7 +279,7 @@ import { UserRolesDialogComponent } from './user-roles-dialog.component';
 export class UsersComponent implements OnInit {
   users = signal<User[]>([]);
   loading = signal(true);
-  displayedColumns = ['userId', 'userName', 'name', 'email', 'roles', 'isActive', 'actions'];
+  displayedColumns = ['userId', 'userName', 'name', 'email', 'platform', 'roles', 'isActive', 'actions'];
 
   constructor(
     private userService: UserService,

@@ -263,7 +263,7 @@ export class LoginComponent {
           this.loading.set(false);
           if (response.success && response.accessToken) {
             this.snackBar.open(response.message || 'Login successful!', 'Close', { duration: 3000 });
-            this.router.navigate(['/admin']);
+            this.router.navigate(['/dashboard']);
           } else {
             this.snackBar.open(response.message || 'Login failed - no token received', 'Close', { duration: 5000 });
           }

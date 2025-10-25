@@ -29,62 +29,65 @@ interface DashboardStats {
   ],
   template: `
     <div class="dashboard">
-      <h1>Dashboard</h1>
-      <p class="subtitle">Welcome to the User Management System</p>
+      <h1>UMS Dashboard</h1>
+      <p class="subtitle">User Management System Administration</p>
 
       @if (loading()) {
         <div class="loading">
           <mat-spinner></mat-spinner>
         </div>
       } @else {
-        <div class="stats-grid">
-          <mat-card class="stat-card users" routerLink="/admin/users">
-            <mat-card-content>
-              <div class="stat-icon">
-                <mat-icon>people</mat-icon>
-              </div>
-              <div class="stat-info">
-                <div class="stat-value">{{ stats().users }}</div>
-                <div class="stat-label">Total Users</div>
-              </div>
-            </mat-card-content>
-          </mat-card>
+        <div class="stats-section">
+          <h2>System Statistics</h2>
+          <div class="stats-grid">
+            <mat-card class="stat-card users" routerLink="/admin/users">
+              <mat-card-content>
+                <div class="stat-icon">
+                  <mat-icon>people</mat-icon>
+                </div>
+                <div class="stat-info">
+                  <div class="stat-value">{{ stats().users }}</div>
+                  <div class="stat-label">Total Users</div>
+                </div>
+              </mat-card-content>
+            </mat-card>
 
-          <mat-card class="stat-card roles" routerLink="/admin/roles">
-            <mat-card-content>
-              <div class="stat-icon">
-                <mat-icon>admin_panel_settings</mat-icon>
-              </div>
-              <div class="stat-info">
-                <div class="stat-value">{{ stats().roles }}</div>
-                <div class="stat-label">Total Roles</div>
-              </div>
-            </mat-card-content>
-          </mat-card>
+            <mat-card class="stat-card roles" routerLink="/admin/roles">
+              <mat-card-content>
+                <div class="stat-icon">
+                  <mat-icon>admin_panel_settings</mat-icon>
+                </div>
+                <div class="stat-info">
+                  <div class="stat-value">{{ stats().roles }}</div>
+                  <div class="stat-label">Total Roles</div>
+                </div>
+              </mat-card-content>
+            </mat-card>
 
-          <mat-card class="stat-card permissions" routerLink="/admin/permissions">
-            <mat-card-content>
-              <div class="stat-icon">
-                <mat-icon>verified_user</mat-icon>
-              </div>
-              <div class="stat-info">
-                <div class="stat-value">{{ stats().permissions }}</div>
-                <div class="stat-label">Total Permissions</div>
-              </div>
-            </mat-card-content>
-          </mat-card>
+            <mat-card class="stat-card permissions" routerLink="/admin/permissions">
+              <mat-card-content>
+                <div class="stat-icon">
+                  <mat-icon>verified_user</mat-icon>
+                </div>
+                <div class="stat-info">
+                  <div class="stat-value">{{ stats().permissions }}</div>
+                  <div class="stat-label">Total Permissions</div>
+                </div>
+              </mat-card-content>
+            </mat-card>
 
-          <mat-card class="stat-card platforms" routerLink="/admin/platforms">
-            <mat-card-content>
-              <div class="stat-icon">
-                <mat-icon>apps</mat-icon>
-              </div>
-              <div class="stat-info">
-                <div class="stat-value">{{ stats().platforms }}</div>
-                <div class="stat-label">Total Platforms</div>
-              </div>
-            </mat-card-content>
-          </mat-card>
+            <mat-card class="stat-card platforms" routerLink="/admin/platforms">
+              <mat-card-content>
+                <div class="stat-icon">
+                  <mat-icon>apps</mat-icon>
+                </div>
+                <div class="stat-info">
+                  <div class="stat-value">{{ stats().platforms }}</div>
+                  <div class="stat-label">Total Platforms</div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
         </div>
 
         <div class="quick-actions">
@@ -145,6 +148,145 @@ interface DashboardStats {
       justify-content: center;
       align-items: center;
       min-height: 400px;
+    }
+
+    /* Platforms Section */
+    .platforms-section {
+      margin-bottom: 48px;
+    }
+
+    .platforms-section h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0 0 8px 0;
+      color: #1e293b;
+      letter-spacing: -0.25px;
+    }
+
+    .section-subtitle {
+      font-size: 14px;
+      color: #64748b;
+      margin: 0 0 24px 0;
+    }
+
+    .platforms-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .platform-card {
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      border: 2px solid #e2e8f0;
+      background: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .platform-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .platform-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .platform-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      border-color: #3b82f6;
+    }
+
+    .platform-card mat-card-content {
+      display: flex;
+      align-items: center;
+      padding: 24px !important;
+      gap: 16px;
+    }
+
+    .platform-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .platform-icon mat-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+      color: white;
+    }
+
+    .platform-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .platform-name {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .platform-description {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .platform-arrow {
+      flex-shrink: 0;
+      opacity: 0.5;
+      transition: all 0.3s ease;
+    }
+
+    .platform-card:hover .platform-arrow {
+      opacity: 1;
+      transform: translateX(4px);
+    }
+
+    .platform-arrow mat-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+      color: #64748b;
+    }
+
+    /* Stats Section */
+    .stats-section {
+      margin-bottom: 48px;
+    }
+
+    .stats-section h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0 0 24px 0;
+      color: #1e293b;
+      letter-spacing: -0.25px;
     }
 
     .stats-grid {
@@ -295,6 +437,10 @@ interface DashboardStats {
     }
 
     @media (max-width: 768px) {
+      .platforms-grid {
+        grid-template-columns: 1fr;
+      }
+
       .stats-grid {
         grid-template-columns: 1fr;
       }

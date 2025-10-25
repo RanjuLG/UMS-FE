@@ -5,6 +5,8 @@ export interface User {
   lastName: string;
   email: string;
   isActive: boolean;
+  platformId: number;
+  platformName: string;
   roles?: string[];
   createdAt?: string;
   createdBy?: number;
@@ -49,6 +51,7 @@ export interface RegisterRequest {
   lastName: string;
   email: string;
   password: string;
+  platformId: number;
 }
 
 export interface ChangePasswordRequest {
@@ -62,6 +65,7 @@ export interface CreateUserRequest {
   lastName: string;
   email: string;
   password: string;
+  platformId: number;
 }
 
 export interface UpdateUserRequest {

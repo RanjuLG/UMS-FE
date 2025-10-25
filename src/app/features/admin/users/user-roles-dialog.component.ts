@@ -31,6 +31,10 @@ import { Role } from '../../../core/models/role.model';
           <mat-spinner></mat-spinner>
         </div>
       } @else {
+        <div class="platform-info">
+          <strong>Platform:</strong> {{ data.user.platformName }}
+          <p class="info-text">Only roles from the same platform can be assigned</p>
+        </div>
         <mat-list>
           @for (role of roles(); track role.roleId) {
             <mat-list-item>
@@ -44,6 +48,11 @@ import { Role } from '../../../core/models/role.model';
                 </div>
               </mat-checkbox>
             </mat-list-item>
+          }
+          @if (roles().length === 0) {
+            <div class="no-roles">
+              No roles available for this platform
+            </div>
           }
         </mat-list>
       }
@@ -64,6 +73,28 @@ import { Role } from '../../../core/models/role.model';
       justify-content: center;
       align-items: center;
       min-height: 200px;
+    }
+
+    .platform-info {
+      background-color: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 4px;
+      padding: 12px;
+      margin-bottom: 16px;
+      color: #15803d;
+    }
+
+    .info-text {
+      font-size: 12px;
+      margin: 4px 0 0 0;
+      color: #16a34a;
+    }
+
+    .no-roles {
+      text-align: center;
+      padding: 32px;
+      color: #666;
+      font-style: italic;
     }
 
     mat-list-item {
@@ -118,10 +149,15 @@ export class UserRolesDialogComponent implements OnInit {
       userDetails: this.userService.getUserById(this.data.user.userId)
     }).subscribe({
       next: (result) => {
-        this.roles.set(result.roles);
+        // Filter roles to only show those from the same platform as the user
+        const platformRoles = result.roles.filter(
+          role => role.platformId === this.data.user.platformId
+        );
+        this.roles.set(platformRoles);
+        
         // Map role names to role IDs
         const userRoleNames = result.userDetails.roles || [];
-        const assignedRoleIds = result.roles
+        const assignedRoleIds = platformRoles
           .filter(role => userRoleNames.includes(role.name))
           .map(role => role.roleId);
         this.userRoleIds.set(assignedRoleIds);

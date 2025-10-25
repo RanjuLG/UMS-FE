@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ConfigService } from './config.service';
 import { User, CreateUserRequest, UpdateUserRequest, ChangePasswordRequest } from '../models/user.model';
+import { Permission } from '../models/permission.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +17,11 @@ export class UserService {
   getUsers(): Observable<User[]> {
     const url = this.config.buildUrl(this.config.getEndpoints().admin.users.list);
     return this.http.get<User[]>(url);
+  }
+
+  getUserPermissions(userId: number): Observable<Permission[]> {
+    const url = this.config.buildUrl(this.config.getEndpoints().admin.users.getPermissions, { userId });
+    return this.http.get<Permission[]>(url);
   }
 
   getUserById(id: number): Observable<User> {
@@ -44,12 +50,12 @@ export class UserService {
   }
 
   assignRole(userId: number, roleId: number): Observable<any> {
-    const url = this.config.buildUrl(this.config.getEndpoints().admin.users.assignRole, { userId, roleId });
-    return this.http.post(url, {});
+    const url = this.config.buildUrl(this.config.getEndpoints().admin.roles.assignRoleToUser);
+    return this.http.post(url, { userId, roleId });
   }
 
   removeRole(userId: number, roleId: number): Observable<void> {
-    const url = this.config.buildUrl(this.config.getEndpoints().admin.users.removeRole, { userId, roleId });
-    return this.http.delete<void>(url);
+    const url = this.config.buildUrl(this.config.getEndpoints().admin.roles.removeRoleFromUser);
+    return this.http.post<void>(url, { userId, roleId });
   }
 }
