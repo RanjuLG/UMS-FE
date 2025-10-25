@@ -101,26 +101,23 @@ interface PlatformAccess {
       display: flex;
       flex-direction: column;
       height: 100vh;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(to bottom, #f8fafc 0%, #e2e8f0 100%);
     }
 
     .toolbar {
       position: sticky;
       top: 0;
       z-index: 1000;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+      background: white;
+      border-bottom: 1px solid #e2e8f0;
     }
 
     .app-name {
       font-size: 20px;
       font-weight: 700;
       letter-spacing: 0.25px;
-      background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: #1e293b;
     }
 
     .spacer {
@@ -176,19 +173,17 @@ interface PlatformAccess {
       font-size: 48px;
       font-weight: 700;
       margin: 0 0 16px 0;
-      color: white;
+      color: #0f172a;
       letter-spacing: -1px;
       text-align: center;
-      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .subtitle {
       font-size: 20px;
-      color: rgba(255, 255, 255, 0.9);
+      color: #475569;
       margin: 0 0 48px 0;
       font-weight: 400;
       text-align: center;
-      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     }
 
     .platforms-grid {
@@ -201,12 +196,12 @@ interface PlatformAccess {
     .platform-card {
       cursor: pointer;
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-      border: 2px solid transparent;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
+      border: 1px solid #e2e8f0;
       background: white;
       position: relative;
       overflow: hidden;
-      border-radius: 16px;
+      border-radius: 12px;
     }
 
     .platform-card::before {
@@ -215,8 +210,8 @@ interface PlatformAccess {
       top: 0;
       left: 0;
       right: 0;
-      height: 5px;
-      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      height: 4px;
+      background: #3b82f6;
       transform: scaleX(0);
       transform-origin: left;
       transition: transform 0.3s ease;
@@ -227,9 +222,9 @@ interface PlatformAccess {
     }
 
     .platform-card:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px -4px rgba(0, 0, 0, 0.12), 0 8px 16px -4px rgba(0, 0, 0, 0.08);
+      border-color: #cbd5e1;
     }
 
     .platform-card mat-card-content {
@@ -242,12 +237,12 @@ interface PlatformAccess {
     .platform-icon {
       width: 80px;
       height: 80px;
-      border-radius: 16px;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
     }
 
     .platform-icon mat-icon {
@@ -263,10 +258,10 @@ interface PlatformAccess {
     }
 
     .platform-name {
-      font-size: 20px;
-      font-weight: 700;
-      color: #1e293b;
-      margin-bottom: 8px;
+      font-size: 18px;
+      font-weight: 600;
+      color: #0f172a;
+      margin-bottom: 6px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -322,7 +317,12 @@ interface PlatformAccess {
 
     ::ng-deep .mat-mdc-menu-panel {
       border-radius: 8px;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04);
+      border: 1px solid #e2e8f0;
+    }
+
+    ::ng-deep .mat-mdc-menu-item:hover {
+      background-color: #f8fafc;
     }
   `]
 })
@@ -332,8 +332,8 @@ export class PlatformsDashboardComponent implements OnInit {
   currentUser = computed(() => this.authService.getCurrentUser());
 
   private platformColors = [
-    '#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', 
-    '#ef4444', '#06b6d4', '#ec4899', '#6366f1'
+    '#2563eb', '#7c3aed', '#059669', '#d97706', 
+    '#dc2626', '#0891b2', '#c026d3', '#4f46e5'
   ];
 
   private platformIcons = [
