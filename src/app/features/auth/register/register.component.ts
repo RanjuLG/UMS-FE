@@ -162,40 +162,63 @@ import { AuthService } from '../../../core/services/auth.service';
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
       padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .register-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+      pointer-events: none;
     }
 
     .register-card {
       width: 100%;
-      max-width: 550px;
-      padding: 20px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      max-width: 560px;
+      padding: 32px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+      background: white;
+      position: relative;
+      z-index: 1;
     }
 
     mat-card-header {
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-bottom: 30px;
+      margin-bottom: 32px;
+      padding: 0;
     }
 
     h1 {
       font-size: 28px;
-      font-weight: 600;
+      font-weight: 700;
       margin: 0;
-      color: #333;
+      background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
       text-align: center;
     }
 
     mat-card-subtitle {
       margin-top: 8px;
-      font-size: 16px;
-      color: #666;
+      font-size: 15px;
+      color: #64748b;
+      font-weight: 400;
     }
 
     mat-card-content {
-      padding: 20px 0;
+      padding: 0;
     }
 
     .form-row {
@@ -205,24 +228,55 @@ import { AuthService } from '../../../core/services/auth.service';
 
     .full-width {
       width: 100%;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
 
     .half-width {
       flex: 1;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
+    }
+
+    ::ng-deep .register-card .mat-mdc-form-field {
+      font-size: 15px;
+    }
+
+    ::ng-deep .register-card .mat-mdc-text-field-wrapper {
+      background-color: #f8fafc;
+    }
+
+    ::ng-deep .register-card .mat-mdc-form-field:hover .mat-mdc-text-field-wrapper {
+      background-color: #f1f5f9;
+    }
+
+    ::ng-deep .register-card .mat-icon {
+      color: #64748b;
     }
 
     .submit-button {
       height: 48px;
-      font-size: 16px;
-      font-weight: 500;
+      font-size: 15px;
+      font-weight: 600;
       margin-top: 8px;
+      background-color: #3b82f6;
+      box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .submit-button:hover:not(:disabled) {
+      background-color: #2563eb;
+      box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.4);
+      transform: translateY(-1px);
+    }
+
+    .submit-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
     }
 
     mat-card-footer {
-      padding: 20px 16px;
-      border-top: 1px solid #e0e0e0;
+      padding: 24px 0 0 0;
+      border-top: 1px solid #e2e8f0;
+      margin-top: 24px;
     }
 
     .footer-links {
@@ -231,21 +285,28 @@ import { AuthService } from '../../../core/services/auth.service';
 
     .footer-links p {
       margin: 0;
-      color: #666;
+      color: #64748b;
+      font-size: 14px;
     }
 
     .footer-links a {
-      color: #667eea;
+      color: #3b82f6;
       text-decoration: none;
-      font-weight: 500;
+      font-weight: 600;
+      transition: color 0.2s ease;
     }
 
     .footer-links a:hover {
+      color: #2563eb;
       text-decoration: underline;
     }
 
     mat-spinner {
       margin: 0 auto;
+    }
+
+    ::ng-deep .register-card .mat-mdc-form-field-focus-overlay {
+      background-color: transparent;
     }
   `]
 })

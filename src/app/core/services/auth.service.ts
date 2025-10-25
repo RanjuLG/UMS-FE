@@ -1,16 +1,17 @@
 import { Injectable, signal } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, tap, BehaviorSubject } from 'rxjs';
 import { ConfigService } from './config.service';
-import { LoginRequest, RegisterRequest, User } from '../models/user.model';
-
-export interface TokenResponse {
-  access_token: string;
-  token_type: string;
-  expires_in: number;
-  scope: string;
-}
+import { 
+  LoginRequest, 
+  LoginResponse, 
+  RegisterRequest, 
+  User, 
+  RefreshTokenRequest, 
+  TokenResponse, 
+  LogoutRequest 
+} from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +21,9 @@ export class AuthService {
   public currentUser$ = this.currentUserSubject.asObservable();
   public isAuthenticated = signal(false);
   
-  private tokenKey = 'access_token';
-  private userKey = 'current_user';
+  private accessTokenKey = 'accessToken';
+  private refreshTokenKey = 'refreshToken';
+  private userKey = 'user';
 
   constructor(
     private http: HttpClient,
@@ -32,49 +34,41 @@ export class AuthService {
   }
 
   /**
-   * Login using OAuth token endpoint with password grant type
+   * Login using new manual JWT authentication
    */
-  login(credentials: LoginRequest): Observable<TokenResponse> {
-    const url = this.config.buildUrl(this.config.getEndpoints().auth.token);
-    const appConfig = this.config.getConfig();
+  login(credentials: LoginRequest): Observable<LoginResponse> {
+    const url = this.config.buildUrl(this.config.getEndpoints().auth.login);
     
-    // Create URL-encoded body as per OAuth spec
-    const body = new URLSearchParams();
-    body.set('grant_type', 'password');
-    body.set('username', credentials.email);
-    body.set('password', credentials.password);
-    body.set('client_id', appConfig.oidc.clientId);
-    body.set('client_secret', appConfig.oidc.clientSecret);
-    body.set('scope', appConfig.oidc.scope);
-
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/x-www-form-urlencoded'
-    });
-
-    return this.http.post<TokenResponse>(url, body.toString(), { headers }).pipe(
+    return this.http.post<LoginResponse>(url, credentials).pipe(
       tap(response => {
-        if (response.access_token) {
-          this.setToken(response.access_token);
-          // Fetch user info after successful token retrieval
-          this.getUserInfo().subscribe({
-            next: (user) => {
-              this.setUser(user);
-            },
-            error: (err) => {
-              console.error('Failed to fetch user info:', err);
-            }
-          });
+        if (response.success && response.accessToken) {
+          this.setToken(response.accessToken);
+          if (response.refreshToken) {
+            this.setRefreshToken(response.refreshToken);
+          }
+          if (response.user) {
+            this.setUser(response.user);
+          }
         }
       })
     );
   }
 
   /**
-   * Get current user information from backend
+   * Refresh access token using refresh token
    */
-  getUserInfo(): Observable<User> {
-    const url = this.config.buildUrl(this.config.getEndpoints().auth.userInfo);
-    return this.http.get<User>(url);
+  refreshToken(refreshToken: string, clientId?: string): Observable<TokenResponse> {
+    const url = this.config.buildUrl(this.config.getEndpoints().auth.refresh);
+    const request: RefreshTokenRequest = { refreshToken, clientId };
+    
+    return this.http.post<TokenResponse>(url, request).pipe(
+      tap(response => {
+        this.setToken(response.accessToken);
+        if (response.refreshToken) {
+          this.setRefreshToken(response.refreshToken);
+        }
+      })
+    );
   }
 
   register(request: RegisterRequest): Observable<User> {
@@ -82,40 +76,83 @@ export class AuthService {
     return this.http.post<User>(url, request);
   }
 
-  logout(): void {
-    this.clearToken();
-    this.clearUser();
-    this.router.navigate(['/login']);
-  }
-
   /**
-   * Get stored JWT token
+   * Logout and revoke tokens
    */
-  getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
+  logout(): void {
+    const url = this.config.buildUrl(this.config.getEndpoints().auth.logout);
+    const refreshToken = this.getRefreshToken();
+    const logoutRequest: LogoutRequest = { refreshToken: refreshToken || undefined };
+    
+    // Try to call logout endpoint, but proceed with local cleanup regardless
+    this.http.post(url, logoutRequest).subscribe({
+      next: () => {
+        this.clearAuthData();
+      },
+      error: (err) => {
+        console.error('Logout API call failed:', err);
+        this.clearAuthData();
+      }
+    });
   }
 
   /**
-   * Store JWT token
+   * Revoke all tokens (logout from all devices)
+   */
+  revokeAllTokens(): Observable<void> {
+    const url = this.config.buildUrl(this.config.getEndpoints().auth.revokeAll);
+    return this.http.post<void>(url, {}).pipe(
+      tap(() => {
+        this.clearAuthData();
+      })
+    );
+  }
+
+  /**
+   * Get stored access token
+   */
+  getAccessToken(): string | null {
+    return localStorage.getItem(this.accessTokenKey);
+  }
+
+  /**
+   * Get stored refresh token
+   */
+  getRefreshToken(): string | null {
+    return localStorage.getItem(this.refreshTokenKey);
+  }
+
+  /**
+   * Store access token
    */
   private setToken(token: string): void {
-    localStorage.setItem(this.tokenKey, token);
+    localStorage.setItem(this.accessTokenKey, token);
     this.isAuthenticated.set(true);
   }
 
   /**
-   * Clear JWT token
+   * Store refresh token
    */
-  private clearToken(): void {
-    localStorage.removeItem(this.tokenKey);
+  private setRefreshToken(token: string): void {
+    localStorage.setItem(this.refreshTokenKey, token);
+  }
+
+  /**
+   * Clear all authentication data
+   */
+  private clearAuthData(): void {
+    localStorage.removeItem(this.accessTokenKey);
+    localStorage.removeItem(this.refreshTokenKey);
+    this.clearUser();
     this.isAuthenticated.set(false);
+    this.router.navigate(['/login']);
   }
 
   /**
    * Check if user has valid token
    */
   hasToken(): boolean {
-    return !!this.getToken();
+    return !!this.getAccessToken();
   }
 
   private setUser(user: User): void {
@@ -137,8 +174,7 @@ export class AuthService {
         this.isAuthenticated.set(true);
       } catch (error) {
         console.error('Failed to parse user from storage:', error);
-        this.clearUser();
-        this.clearToken();
+        this.clearAuthData();
       }
     }
   }

@@ -125,19 +125,23 @@ import { UserRolesDialogComponent } from './user-roles-dialog.component';
       justify-content: space-between;
       align-items: flex-start;
       margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
     }
 
     h1 {
       font-size: 32px;
-      font-weight: 500;
+      font-weight: 700;
       margin: 0 0 8px 0;
-      color: #333;
+      color: #1e293b;
+      letter-spacing: -0.5px;
     }
 
     .subtitle {
       font-size: 16px;
-      color: #666;
+      color: #64748b;
       margin: 0;
+      font-weight: 400;
     }
 
     .loading {
@@ -149,48 +153,109 @@ import { UserRolesDialogComponent } from './user-roles-dialog.component';
 
     mat-card {
       overflow: hidden;
+      border: 1px solid #e2e8f0;
     }
 
     .users-table {
       width: 100%;
+      background: white;
     }
 
-    .users-table th {
-      background-color: #f5f5f5;
+    ::ng-deep .users-table th {
+      background-color: #f8fafc;
       font-weight: 600;
-      color: #333;
+      color: #1e293b;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid #e2e8f0;
     }
 
-    .users-table td, .users-table th {
+    ::ng-deep .users-table td {
+      color: #475569;
+      font-size: 14px;
+    }
+
+    ::ng-deep .users-table td, 
+    ::ng-deep .users-table th {
       padding: 16px;
+    }
+
+    ::ng-deep .users-table tr:hover {
+      background-color: #f8fafc;
     }
 
     .roles-chips {
       display: flex;
       flex-wrap: wrap;
-      gap: 4px;
+      gap: 6px;
     }
 
-    .roles-chips mat-chip {
+    ::ng-deep .roles-chips mat-chip {
       font-size: 12px;
-      min-height: 24px;
-      padding: 4px 8px;
+      min-height: 28px;
+      padding: 4px 12px;
+      background-color: #eff6ff;
+      color: #3b82f6;
+      font-weight: 500;
+      border: 1px solid #bfdbfe;
     }
 
     .no-roles {
-      font-size: 14px;
-      color: #999;
+      font-size: 13px;
+      color: #94a3b8;
       font-style: italic;
     }
 
-    mat-chip.active {
-      background-color: #4caf50 !important;
-      color: white;
+    ::ng-deep mat-chip.active {
+      background-color: #10b981 !important;
+      color: white !important;
+      border: none;
+      font-weight: 600;
     }
 
-    mat-chip.inactive {
-      background-color: #f44336 !important;
-      color: white;
+    ::ng-deep mat-chip.inactive {
+      background-color: #ef4444 !important;
+      color: white !important;
+      border: none;
+      font-weight: 600;
+    }
+
+    ::ng-deep .mat-mdc-icon-button {
+      transition: all 0.2s ease;
+    }
+
+    ::ng-deep .mat-mdc-icon-button:hover {
+      background-color: #f1f5f9;
+      transform: scale(1.1);
+    }
+
+    ::ng-deep .mat-mdc-icon-button .mat-icon {
+      color: #64748b;
+    }
+
+    ::ng-deep .mat-mdc-icon-button.mat-primary .mat-icon {
+      color: #3b82f6;
+    }
+
+    ::ng-deep .mat-mdc-icon-button.mat-warn .mat-icon {
+      color: #ef4444;
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      ::ng-deep .users-table {
+        font-size: 12px;
+      }
+
+      ::ng-deep .users-table td, 
+      ::ng-deep .users-table th {
+        padding: 12px 8px;
+      }
     }
   `]
 })

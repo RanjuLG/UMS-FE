@@ -8,6 +8,8 @@ export interface EndpointsConfig {
     login: string;
     register: string;
     logout: string;
+    refresh: string;
+    revokeAll: string;
   };
   admin: {
     users: any;

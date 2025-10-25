@@ -127,15 +127,17 @@ interface DashboardStats {
 
     h1 {
       font-size: 32px;
-      font-weight: 500;
+      font-weight: 700;
       margin: 0 0 8px 0;
-      color: #333;
+      color: #1e293b;
+      letter-spacing: -0.5px;
     }
 
     .subtitle {
       font-size: 16px;
-      color: #666;
+      color: #64748b;
       margin: 0 0 32px 0;
+      font-weight: 400;
     }
 
     .loading {
@@ -147,59 +149,74 @@ interface DashboardStats {
 
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
       margin-bottom: 40px;
     }
 
     .stat-card {
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      border: 1px solid #e2e8f0;
+      background: white;
     }
 
     .stat-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      border-color: transparent;
     }
 
     .stat-card mat-card-content {
       display: flex;
       align-items: center;
-      padding: 24px !important;
+      padding: 28px !important;
     }
 
     .stat-icon {
-      width: 64px;
-      height: 64px;
-      border-radius: 12px;
+      width: 72px;
+      height: 72px;
+      border-radius: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
       margin-right: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-icon::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: inherit;
+      opacity: 0.1;
     }
 
     .stat-icon mat-icon {
-      font-size: 32px;
-      width: 32px;
-      height: 32px;
+      font-size: 36px;
+      width: 36px;
+      height: 36px;
       color: white;
+      position: relative;
+      z-index: 1;
     }
 
     .stat-card.users .stat-icon {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: #3b82f6;
     }
 
     .stat-card.roles .stat-icon {
-      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      background: #8b5cf6;
     }
 
     .stat-card.permissions .stat-icon {
-      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      background: #06b6d4;
     }
 
     .stat-card.platforms .stat-icon {
-      background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+      background: #10b981;
     }
 
     .stat-info {
@@ -207,54 +224,59 @@ interface DashboardStats {
     }
 
     .stat-value {
-      font-size: 36px;
-      font-weight: 600;
-      color: #333;
+      font-size: 40px;
+      font-weight: 700;
+      color: #1e293b;
       line-height: 1;
       margin-bottom: 8px;
+      letter-spacing: -1px;
     }
 
     .stat-label {
       font-size: 14px;
-      color: #666;
+      color: #64748b;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      font-weight: 600;
     }
 
     .quick-actions {
-      margin-top: 40px;
+      margin-top: 48px;
     }
 
     .quick-actions h2 {
       font-size: 24px;
-      font-weight: 500;
+      font-weight: 700;
       margin: 0 0 24px 0;
-      color: #333;
+      color: #1e293b;
+      letter-spacing: -0.25px;
     }
 
     .actions-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
+      gap: 20px;
     }
 
     .action-card {
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      border: 1px solid #e2e8f0;
+      background: white;
     }
 
     .action-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-      background-color: #f5f5f5;
+      transform: translateY(-4px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      border-color: #3b82f6;
     }
 
     .action-card mat-card-content {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 24px !important;
+      padding: 28px !important;
       text-align: center;
     }
 
@@ -262,14 +284,24 @@ interface DashboardStats {
       font-size: 48px;
       width: 48px;
       height: 48px;
-      color: #667eea;
+      color: #3b82f6;
       margin-bottom: 12px;
     }
 
     .action-card span {
-      font-size: 16px;
-      font-weight: 500;
-      color: #333;
+      font-size: 15px;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    @media (max-width: 768px) {
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
   `]
 })

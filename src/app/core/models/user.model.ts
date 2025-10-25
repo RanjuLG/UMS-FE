@@ -15,12 +15,32 @@ export interface User {
 export interface LoginRequest {
   email: string;
   password: string;
+  clientId?: string;
+  clientSecret?: string;
 }
 
 export interface LoginResponse {
   success: boolean;
   message: string;
-  user: User | null;
+  accessToken?: string;
+  refreshToken?: string;
+  expiresIn: number;
+  user?: User;
+}
+
+export interface RefreshTokenRequest {
+  refreshToken: string;
+  clientId?: string;
+}
+
+export interface TokenResponse {
+  accessToken: string;
+  refreshToken: string;
+  expiresIn: number;
+}
+
+export interface LogoutRequest {
+  refreshToken?: string;
 }
 
 export interface RegisterRequest {

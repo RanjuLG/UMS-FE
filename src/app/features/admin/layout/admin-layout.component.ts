@@ -24,7 +24,7 @@ import { AuthService } from '../../../core/services/auth.service';
   ],
   template: `
     <div class="admin-layout">
-      <mat-toolbar color="primary" class="toolbar">
+      <mat-toolbar class="toolbar">
         <button mat-icon-button (click)="toggleSidenav()">
           <mat-icon>menu</mat-icon>
         </button>
@@ -92,19 +92,40 @@ import { AuthService } from '../../../core/services/auth.service';
       display: flex;
       flex-direction: column;
       height: 100vh;
+      background-color: #f8fafc;
     }
 
     .toolbar {
       position: sticky;
       top: 0;
       z-index: 1000;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      background: white;
+      color: #1e293b;
+    }
+
+    ::ng-deep .toolbar .mat-toolbar {
+      background: white;
+      color: #1e293b;
+    }
+
+    ::ng-deep .toolbar .mat-icon {
+      color: #64748b;
+    }
+
+    ::ng-deep .toolbar button {
+      color: #1e293b;
     }
 
     .app-name {
       font-size: 20px;
-      font-weight: 500;
+      font-weight: 700;
       margin-left: 16px;
+      letter-spacing: 0.25px;
+      background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .spacer {
@@ -113,52 +134,99 @@ import { AuthService } from '../../../core/services/auth.service';
 
     .user-name {
       margin: 0 8px;
+      font-weight: 500;
     }
 
     .sidenav-container {
       flex: 1;
+      background-color: #f8fafc;
     }
 
     .sidenav {
-      width: 250px;
-      box-shadow: 2px 0 4px rgba(0,0,0,0.1);
+      width: 260px;
+      box-shadow: 1px 0 3px 0 rgba(0, 0, 0, 0.05);
+      background-color: white;
+      border-right: 1px solid #e2e8f0;
     }
 
     .content {
       padding: 24px;
-      background-color: #f5f5f5;
+      background-color: #f8fafc;
     }
 
-    mat-nav-list a {
-      margin: 4px 8px;
-      border-radius: 4px;
+    ::ng-deep mat-nav-list {
+      padding-top: 16px;
     }
 
-    mat-nav-list a.active {
-      background-color: rgba(63, 81, 181, 0.1);
-      color: #3f51b5;
+    ::ng-deep mat-nav-list a {
+      margin: 4px 12px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      height: 48px;
     }
 
-    mat-nav-list a:hover {
-      background-color: rgba(0, 0, 0, 0.04);
+    ::ng-deep mat-nav-list a .mat-icon {
+      color: #64748b;
+      transition: color 0.2s ease;
+    }
+
+    ::ng-deep mat-nav-list a.active {
+      background-color: #f1f5f9;
+      color: #3b82f6;
+      font-weight: 600;
+      border-left: 3px solid #3b82f6;
+    }
+
+    ::ng-deep mat-nav-list a.active .mat-icon {
+      color: #3b82f6;
+    }
+
+    ::ng-deep mat-nav-list a:hover:not(.active) {
+      background-color: #f1f5f9;
+    }
+
+    ::ng-deep mat-nav-list a:hover:not(.active) .mat-icon {
+      color: #3b82f6;
     }
 
     .user-info {
       padding: 16px;
+      background-color: #f8fafc;
     }
 
     .user-info .user-name {
-      font-weight: 500;
+      font-weight: 600;
       margin-bottom: 4px;
+      color: #1e293b;
     }
 
     .user-info .user-email {
       font-size: 14px;
-      color: #666;
+      color: #64748b;
     }
 
     mat-divider {
       margin: 8px 0;
+      background-color: #e2e8f0;
+    }
+
+    ::ng-deep .mat-mdc-menu-panel {
+      border-radius: 8px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    ::ng-deep .mat-mdc-menu-item {
+      border-radius: 4px;
+      margin: 4px 8px;
+    }
+
+    ::ng-deep .mat-mdc-menu-item:hover {
+      background-color: #f1f5f9;
+    }
+
+    ::ng-deep .mat-mdc-menu-item .mat-icon {
+      color: #64748b;
+      margin-right: 12px;
     }
   `]
 })
