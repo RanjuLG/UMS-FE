@@ -1,0 +1,48 @@
+{
+  "baseUrl": "https://localhost:7113",
+  "auth": {
+    "token": "/connect/token",
+    "userInfo": "/api/auth/me",
+    "login": "/api/auth/login",
+    "register": "/api/auth/register",
+    "logout": "/api/auth/logout"
+  },
+  "admin": {
+    "users": {
+      "list": "/api/admin/users",
+      "getById": "/api/admin/users/{id}",
+      "create": "/api/admin/users",
+      "update": "/api/admin/users/{id}",
+      "delete": "/api/admin/users/{id}",
+      "changePassword": "/api/admin/users/{id}/change-password",
+      "assignRole": "/api/admin/users/{userId}/roles/{roleId}",
+      "removeRole": "/api/admin/users/{userId}/roles/{roleId}"
+    },
+    "roles": {
+      "list": "/api/admin/roles",
+      "getById": "/api/admin/roles/{id}",
+      "create": "/api/admin/roles",
+      "update": "/api/admin/roles/{id}",
+      "delete": "/api/admin/roles/{id}",
+      "getPermissions": "/api/admin/roles/{roleId}/permissions",
+      "assignPermission": "/api/admin/roles/{roleId}/permissions/{permissionId}",
+      "removePermission": "/api/admin/roles/{roleId}/permissions/{permissionId}"
+    },
+    "permissions": {
+      "list": "/api/admin/permissions",
+      "getById": "/api/admin/permissions/{id}",
+      "getByPlatform": "/api/admin/permissions/platform/{platformId}",
+      "create": "/api/admin/permissions",
+      "update": "/api/admin/permissions/{id}",
+      "delete": "/api/admin/permissions/{id}"
+    },
+    "platforms": {
+      "list": "/api/admin/platforms",
+      "getById": "/api/admin/platforms/{id}",
+      "getByClientId": "/api/admin/platforms/client/{clientId}",
+      "create": "/api/admin/platforms",
+      "update": "/api/admin/platforms/{id}",
+      "delete": "/api/admin/platforms/{id}"
+    }
+  }
+}
