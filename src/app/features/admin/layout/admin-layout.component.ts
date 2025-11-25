@@ -106,7 +106,7 @@ import { AuthService } from '../../../core/services/auth.service';
       position: sticky;
       top: 0;
       z-index: 1000;
-      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       background: white;
       color: #1e293b;
     }
@@ -128,7 +128,7 @@ import { AuthService } from '../../../core/services/auth.service';
       font-size: 20px;
       font-weight: 700;
       margin-left: 16px;
-      letter-spacing: 0.25px;
+      letter-spacing: 0.5px;
       color: #3b82f6;
     }
 
@@ -148,8 +148,8 @@ import { AuthService } from '../../../core/services/auth.service';
 
     .sidenav {
       width: 260px;
-      box-shadow: 1px 0 3px 0 rgba(0, 0, 0, 0.05);
-      background-color: white;
+      box-shadow: 2px 0 8px rgba(0, 0, 0, 0.06);
+      background-color: #fafafa;
       border-right: 1px solid #e2e8f0;
     }
 
@@ -175,10 +175,11 @@ import { AuthService } from '../../../core/services/auth.service';
     }
 
     ::ng-deep mat-nav-list a.active {
-      background-color: #f1f5f9;
+      background-color: #eff6ff;
       color: #3b82f6;
       font-weight: 600;
-      border-left: 3px solid #3b82f6;
+      border-left: 4px solid #3b82f6;
+      box-shadow: 0 2px 4px rgba(59, 130, 246, 0.1);
     }
 
     ::ng-deep mat-nav-list a.active .mat-icon {
@@ -196,7 +197,7 @@ import { AuthService } from '../../../core/services/auth.service';
     ::ng-deep mat-nav-list a.back-link {
       color: #64748b;
       font-weight: 500;
-      background-color: #f8fafc;
+      background-color: #f1f5f9;
     }
 
     ::ng-deep mat-nav-list a.back-link:hover {

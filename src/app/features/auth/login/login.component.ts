@@ -128,10 +128,11 @@ import { AuthService } from '../../../core/services/auth.service';
         width: 100%;
         max-width: 440px;
         padding: 32px;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 10px 20px -5px rgba(0, 0, 0, 0.1);
         background: white;
         position: relative;
         z-index: 1;
+        border: 1px solid rgba(226, 232, 240, 0.8);
       }
 
       mat-card-header {
@@ -146,8 +147,9 @@ import { AuthService } from '../../../core/services/auth.service';
         font-size: 28px;
         font-weight: 700;
         margin: 0;
-        color: #1e293b;
+        color: #3b82f6;
         text-align: center;
+        letter-spacing: -0.5px;
       }
 
       mat-card-subtitle {
@@ -188,14 +190,15 @@ import { AuthService } from '../../../core/services/auth.service';
         font-weight: 600;
         margin-top: 8px;
         background-color: #3b82f6;
-        box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3);
+        box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.5), 0 2px 4px -1px rgba(59, 130, 246, 0.3);
         transition: all 0.3s ease;
+        letter-spacing: 0.5px;
       }
 
       .submit-button:hover:not(:disabled) {
         background-color: #2563eb;
-        box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.4);
-        transform: translateY(-1px);
+        box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.6), 0 4px 6px -2px rgba(59, 130, 246, 0.4);
+        transform: translateY(-2px);
       }
 
       .submit-button:disabled {

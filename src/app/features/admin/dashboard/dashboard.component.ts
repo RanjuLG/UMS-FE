@@ -132,7 +132,7 @@ interface DashboardStats {
       font-size: 32px;
       font-weight: 700;
       margin: 0 0 8px 0;
-      color: #1e293b;
+      color: #3b82f6;
       letter-spacing: -0.5px;
     }
 
@@ -179,7 +179,7 @@ interface DashboardStats {
     .platform-card {
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
       border: 2px solid #e2e8f0;
       background: white;
       position: relative;
@@ -205,7 +205,7 @@ interface DashboardStats {
 
     .platform-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.08);
       border-color: #3b82f6;
     }
 
@@ -299,14 +299,14 @@ interface DashboardStats {
     .stat-card {
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
       border: 1px solid #e2e8f0;
       background: white;
     }
 
     .stat-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.08);
       border-color: transparent;
     }
 
@@ -403,14 +403,14 @@ interface DashboardStats {
     .action-card {
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
       border: 1px solid #e2e8f0;
       background: white;
     }
 
     .action-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.08);
       border-color: #3b82f6;
     }
 
