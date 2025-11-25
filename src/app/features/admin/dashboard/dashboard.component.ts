@@ -193,7 +193,7 @@ interface DashboardStats {
       left: 0;
       right: 0;
       height: 4px;
-      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      background: #3b82f6;
       transform: scaleX(0);
       transform-origin: left;
       transition: transform 0.3s ease;
@@ -350,7 +350,7 @@ interface DashboardStats {
     }
 
     .stat-card.roles .stat-icon {
-      background: #8b5cf6;
+      background: #06b6d4;
     }
 
     .stat-card.permissions .stat-icon {

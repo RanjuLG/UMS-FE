@@ -5,7 +5,8 @@
   box-sizing: border-box;
 }
 
-html, body {
+html,
+body {
   height: 100%;
 }
 
@@ -22,7 +23,7 @@ body {
 :root {
   --primary-color: #3b82f6;
   --primary-dark: #2563eb;
-  --accent-color: #8b5cf6;
+  --accent-color: #06b6d4;
   --warn-color: #ef4444;
   --success-color: #10b981;
 }
@@ -133,7 +134,7 @@ body {
 
 .mat-mdc-button.mat-accent,
 .mat-mdc-raised-button.mat-accent {
-  --mdc-filled-button-container-color: #8b5cf6;
+  --mdc-filled-button-container-color: #06b6d4;
   --mdc-filled-button-label-text-color: white;
 }
 

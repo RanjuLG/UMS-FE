@@ -129,10 +129,7 @@ import { AuthService } from '../../../core/services/auth.service';
       font-weight: 700;
       margin-left: 16px;
       letter-spacing: 0.25px;
-      background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: #3b82f6;
     }
 
     .spacer {

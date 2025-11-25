@@ -193,8 +193,7 @@ import { Platform } from '../../../core/models/platform.model';
       right: 0;
       bottom: 0;
       background: 
-        radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 50%);
+        radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%);
       pointer-events: none;
     }
 
@@ -220,10 +219,7 @@ import { Platform } from '../../../core/models/platform.model';
       font-size: 28px;
       font-weight: 700;
       margin: 0;
-      background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: #1e293b;
       text-align: center;
     }
 
