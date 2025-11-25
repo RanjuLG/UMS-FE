@@ -32,8 +32,11 @@ import { Role } from '../../../core/models/role.model';
         </div>
       } @else {
         <div class="platform-info">
-          <strong>Platform:</strong> {{ data.user.platformName }}
-          <p class="info-text">Only roles from the same platform can be assigned</p>
+          <strong>Platforms:</strong> 
+          @for (platform of data.user.platforms; track platform.platformId) {
+            <span class="platform-badge">{{ platform.name }}</span>
+          }
+          <p class="info-text">Only roles from user's platforms can be assigned</p>
         </div>
         <mat-list>
           @for (role of roles(); track role.roleId) {
@@ -51,7 +54,7 @@ import { Role } from '../../../core/models/role.model';
           }
           @if (roles().length === 0) {
             <div class="no-roles">
-              No roles available for this platform
+              No roles available for the user's platforms
             </div>
           }
         </mat-list>
@@ -82,6 +85,19 @@ import { Role } from '../../../core/models/role.model';
       padding: 12px;
       margin-bottom: 16px;
       color: #15803d;
+    }
+
+    .platform-badge {
+      display: inline-block;
+      background-color: #dcfce7;
+      color: #16a34a;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-left: 8px;
+      margin-right: 4px;
+      border: 1px solid #bbf7d0;
     }
 
     .info-text {
@@ -149,9 +165,12 @@ export class UserRolesDialogComponent implements OnInit {
       userDetails: this.userService.getUserById(this.data.user.userId)
     }).subscribe({
       next: (result) => {
-        // Filter roles to only show those from the same platform as the user
+        // Get all platform IDs for the user
+        const userPlatformIds = this.data.user.platforms.map(p => p.platformId);
+        
+        // Filter roles to only show those from the user's platforms
         const platformRoles = result.roles.filter(
-          role => role.platformId === this.data.user.platformId
+          role => userPlatformIds.includes(role.platformId)
         );
         this.roles.set(platformRoles);
         

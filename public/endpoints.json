@@ -9,6 +9,9 @@
     "refresh": "/api/auth/refresh",
     "revokeAll": "/api/auth/revoke-all"
   },
+  "user": {
+    "myPermissions": "/api/users/me/permissions"
+  },
   "admin": {
     "users": {
       "list": "/api/admin/users",

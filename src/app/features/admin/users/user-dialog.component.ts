@@ -83,21 +83,20 @@ import { Platform } from '../../../core/models/platform.model';
         }
 
         <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Platform</mat-label>
-          <mat-select formControlName="platformId" [disabled]="data.mode === 'edit'">
-            <mat-option value="">-- Select Platform --</mat-option>
+          <mat-label>Platforms</mat-label>
+          <mat-select formControlName="platformIds" multiple [disabled]="data.mode === 'edit'">
             @for (platform of platforms(); track platform.platformId) {
               <mat-option [value]="platform.platformId">{{ platform.name }}</mat-option>
             }
           </mat-select>
-          @if (userForm.get('platformId')?.hasError('required')) {
-            <mat-error>Platform is required</mat-error>
+          @if (userForm.get('platformIds')?.hasError('required')) {
+            <mat-error>At least one platform is required</mat-error>
           }
         </mat-form-field>
 
         @if (data.mode === 'edit') {
           <p class="platform-warning">
-            ⚠️ Platform cannot be changed after user creation
+            ⚠️ Platforms cannot be changed after user creation
           </p>
         }
 
@@ -199,15 +198,17 @@ export class UserDialogComponent implements OnInit {
         lastName: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(8)]],
-        platformId: ['', [Validators.required]]
+        platformIds: [[], [Validators.required]]
       });
     } else {
+      // Convert user's platforms to an array of IDs for the form
+      const platformIds = this.data.user?.platforms?.map(p => p.platformId) || [];
       return this.fb.group({
         userName: [this.data.user?.userName, [Validators.required]],
         firstName: [this.data.user?.firstName, [Validators.required]],
         lastName: [this.data.user?.lastName, [Validators.required]],
         email: [this.data.user?.email, [Validators.required, Validators.email]],
-        platformId: [this.data.user?.platformId, [Validators.required]],
+        platformIds: [platformIds, [Validators.required]],
         isActive: [this.data.user?.isActive ?? true]
       });
     }

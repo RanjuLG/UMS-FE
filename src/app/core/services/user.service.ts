@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ConfigService } from './config.service';
 import { User, CreateUserRequest, UpdateUserRequest, ChangePasswordRequest } from '../models/user.model';
 import { Permission } from '../models/permission.model';
@@ -17,6 +17,19 @@ export class UserService {
   getUsers(): Observable<User[]> {
     const url = this.config.buildUrl(this.config.getEndpoints().admin.users.list);
     return this.http.get<User[]>(url);
+  }
+
+  /**
+   * Get current user's permissions (non-admin endpoint)
+   */
+  getMyPermissions(): Observable<Permission[]> {
+    const endpoints = this.config.getEndpoints();
+    if (!endpoints.user?.myPermissions) {
+      console.warn('User permissions endpoint not configured, falling back to empty permissions');
+      return of([]);
+    }
+    const url = this.config.buildUrl(endpoints.user.myPermissions);
+    return this.http.get<Permission[]>(url);
   }
 
   getUserPermissions(userId: number): Observable<Permission[]> {

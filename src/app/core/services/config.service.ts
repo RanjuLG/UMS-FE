@@ -11,6 +11,9 @@ export interface EndpointsConfig {
     refresh: string;
     revokeAll: string;
   };
+  user?: {
+    myPermissions: string;
+  };
   admin: {
     users: any;
     roles: any;

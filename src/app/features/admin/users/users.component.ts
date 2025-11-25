@@ -70,9 +70,16 @@ import { UserRolesDialogComponent } from './user-roles-dialog.component';
             </ng-container>
 
             <ng-container matColumnDef="platform">
-              <th mat-header-cell *matHeaderCellDef>Platform</th>
+              <th mat-header-cell *matHeaderCellDef>Platforms</th>
               <td mat-cell *matCellDef="let user">
-                <mat-chip class="platform-chip">{{ user.platformName }}</mat-chip>
+                <div class="platform-chips">
+                  @for (platform of user.platforms; track platform.platformId) {
+                    <mat-chip class="platform-chip">{{ platform.name }}</mat-chip>
+                  }
+                  @if (!user.platforms || user.platforms.length === 0) {
+                    <span class="no-platforms">No platforms assigned</span>
+                  }
+                </div>
               </td>
             </ng-container>
 
@@ -198,6 +205,12 @@ import { UserRolesDialogComponent } from './user-roles-dialog.component';
       gap: 6px;
     }
 
+    .platform-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
     ::ng-deep .roles-chips mat-chip {
       font-size: 12px;
       min-height: 28px;
@@ -219,6 +232,12 @@ import { UserRolesDialogComponent } from './user-roles-dialog.component';
     }
 
     .no-roles {
+      font-size: 13px;
+      color: #94a3b8;
+      font-style: italic;
+    }
+
+    .no-platforms {
       font-size: 13px;
       color: #94a3b8;
       font-style: italic;

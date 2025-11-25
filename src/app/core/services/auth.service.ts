@@ -13,6 +13,29 @@ import {
   LogoutRequest 
 } from '../models/user.model';
 
+interface PlatformInToken {
+  platformId: number;
+  name: string;
+  clientId: string;
+  redirectUris: string[];
+  postLogoutRedirectUris: string[];
+}
+
+interface DecodedToken {
+  sub: string;
+  email: string;
+  given_name: string;
+  family_name: string;
+  username: string;
+  name: string;
+  jti: string;
+  platforms?: string;  // JSON string containing PlatformInToken[]
+  role: string;
+  exp: number;
+  iss: string;
+  aud: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -190,5 +213,49 @@ export class AuthService {
 
   isAdmin(): boolean {
     return this.hasRole('Admin');
+  }
+
+  /**
+   * Decode JWT token and extract platform information
+   */
+  getPlatformsFromToken(): PlatformInToken[] {
+    const token = this.getAccessToken();
+    if (!token) {
+      return [];
+    }
+
+    try {
+      // JWT tokens are in format: header.payload.signature
+      const payload = token.split('.')[1];
+      const decodedPayload = JSON.parse(atob(payload));
+      const decoded = decodedPayload as DecodedToken;
+      
+      if (decoded.platforms) {
+        return JSON.parse(decoded.platforms);
+      }
+      return [];
+    } catch (error) {
+      console.error('Failed to decode token platforms:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Get user info from decoded token
+   */
+  getTokenInfo(): DecodedToken | null {
+    const token = this.getAccessToken();
+    if (!token) {
+      return null;
+    }
+
+    try {
+      const payload = token.split('.')[1];
+      const decodedPayload = JSON.parse(atob(payload));
+      return decodedPayload as DecodedToken;
+    } catch (error) {
+      console.error('Failed to decode token:', error);
+      return null;
+    }
   }
 }

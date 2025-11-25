@@ -1,3 +1,8 @@
+export interface PlatformDto {
+  platformId: number;
+  name: string;
+}
+
 export interface User {
   userId: number;
   userName: string;
@@ -5,8 +10,7 @@ export interface User {
   lastName: string;
   email: string;
   isActive: boolean;
-  platformId: number;
-  platformName: string;
+  platforms: PlatformDto[];
   roles?: string[];
   createdAt?: string;
   createdBy?: number;
@@ -51,7 +55,7 @@ export interface RegisterRequest {
   lastName: string;
   email: string;
   password: string;
-  platformId: number;
+  platformIds: number[];
 }
 
 export interface ChangePasswordRequest {
@@ -65,7 +69,7 @@ export interface CreateUserRequest {
   lastName: string;
   email: string;
   password: string;
-  platformId: number;
+  platformIds: number[];
 }
 
 export interface UpdateUserRequest {

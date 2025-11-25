@@ -361,59 +361,57 @@ export class PlatformsDashboardComponent implements OnInit {
       return;
     }
 
-    this.userService.getUserPermissions(currentUser.userId).subscribe({
-      next: (permissions) => {
-        // Extract unique platforms from permissions
-        const platformMap = new Map<number, PlatformAccess>();
-        
-        permissions.forEach((permission, index) => {
-          if (!platformMap.has(permission.platformId)) {
-            platformMap.set(permission.platformId, {
-              platformId: permission.platformId,
-              platformName: permission.platformName || 'Unknown Platform',
-              description: `Access to ${permission.platformName || 'platform'}`,
-              icon: this.platformIcons[index % this.platformIcons.length],
-              color: this.platformColors[index % this.platformColors.length]
-            });
-          }
-        });
-
-        // Always include UMS platform with specific styling
-        if (!platformMap.has(1)) {
-          platformMap.set(1, {
-            platformId: 1,
-            platformName: 'User Management System',
-            description: 'Manage users, roles, permissions and platforms',
-            icon: 'admin_panel_settings',
-            color: '#3b82f6'
+    // Get platforms directly from JWT token
+    const platformsFromToken = this.authService.getPlatformsFromToken();
+    
+    if (platformsFromToken && platformsFromToken.length > 0) {
+      // Use platforms from token - this is the most reliable source
+      const platformAccesses: PlatformAccess[] = platformsFromToken.map((platform, index) => {
+        const isUMS = platform.platformId === 1;
+        return {
+          platformId: platform.platformId,
+          platformName: platform.name,
+          description: isUMS ? 'Manage users, roles, permissions and platforms' : `Access to ${platform.name}`,
+          redirectUris: platform.redirectUris,
+          icon: isUMS ? 'admin_panel_settings' : this.platformIcons[index % this.platformIcons.length],
+          color: isUMS ? '#3b82f6' : this.platformColors[index % this.platformColors.length]
+        };
+      });
+      
+      this.accessiblePlatforms.set(platformAccesses);
+      this.loading.set(false);
+    } else {
+      // Fallback: Try to get from permissions if token doesn't have platforms
+      // This is for backward compatibility
+      this.userService.getMyPermissions().subscribe({
+        next: (permissions) => {
+          // Extract unique platforms from permissions
+          const platformMap = new Map<number, PlatformAccess>();
+          
+          permissions.forEach((permission, index) => {
+            if (!platformMap.has(permission.platformId)) {
+              const isUMS = permission.platformId === 1;
+              platformMap.set(permission.platformId, {
+                platformId: permission.platformId,
+                platformName: isUMS ? 'User Management System' : (permission.platformName || 'Unknown Platform'),
+                description: isUMS ? 'Manage users, roles, permissions and platforms' : `Access to ${permission.platformName || 'platform'}`,
+                icon: isUMS ? 'admin_panel_settings' : this.platformIcons[index % this.platformIcons.length],
+                color: isUMS ? '#3b82f6' : this.platformColors[index % this.platformColors.length]
+              });
+            }
           });
-        } else {
-          // Update UMS platform details if it exists
-          const umsData = platformMap.get(1);
-          if (umsData) {
-            umsData.platformName = 'User Management System';
-            umsData.description = 'Manage users, roles, permissions and platforms';
-            umsData.icon = 'admin_panel_settings';
-            umsData.color = '#3b82f6';
-          }
-        }
 
-        this.accessiblePlatforms.set(Array.from(platformMap.values()));
-        this.loading.set(false);
-      },
-      error: (error) => {
-        console.error('Error loading user permissions:', error);
-        // If error, at least show UMS platform
-        this.accessiblePlatforms.set([{
-          platformId: 1,
-          platformName: 'User Management System',
-          description: 'Manage users, roles, permissions and platforms',
-          icon: 'admin_panel_settings',
-          color: '#3b82f6'
-        }]);
-        this.loading.set(false);
-      }
-    });
+          this.accessiblePlatforms.set(Array.from(platformMap.values()));
+          this.loading.set(false);
+        },
+        error: (error) => {
+          console.error('Error loading user permissions:', error);
+          // Don't show any platforms on error - user may not have permissions
+          this.accessiblePlatforms.set([]);
+          this.loading.set(false);
+        }
+      });
+    }
   }
 
   accessPlatform(platform: PlatformAccess): void {
@@ -424,7 +422,14 @@ export class PlatformsDashboardComponent implements OnInit {
       return;
     }
 
-    // For other platforms, get the platform details and redirect
+    // If platform has redirect URIs (from token), use them directly
+    if (platform.redirectUris && platform.redirectUris.length > 0) {
+      const redirectUri = platform.redirectUris[0];
+      window.open(redirectUri, '_blank');
+      return;
+    }
+
+    // Fallback: Fetch platform details from API
     this.platformService.getPlatformById(platform.platformId).subscribe({
       next: (platformDetails) => {
         if (platformDetails.redirectUris && platformDetails.redirectUris.length > 0) {

@@ -138,16 +138,15 @@ import { Platform } from '../../../core/models/platform.model';
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="full-width">
-              <mat-label>Platform</mat-label>
-              <mat-select formControlName="platformId">
-                <mat-option value="">-- Select Platform --</mat-option>
+              <mat-label>Platforms</mat-label>
+              <mat-select formControlName="platformIds" multiple>
                 @for (platform of platforms(); track platform.platformId) {
                   <mat-option [value]="platform.platformId">{{ platform.name }}</mat-option>
                 }
               </mat-select>
               <mat-icon matPrefix>business</mat-icon>
-              @if (registerForm.get('platformId')?.hasError('required') && registerForm.get('platformId')?.touched) {
-                <mat-error>Platform is required</mat-error>
+              @if (registerForm.get('platformIds')?.hasError('required') && registerForm.get('platformIds')?.touched) {
+                <mat-error>At least one platform is required</mat-error>
               }
             </mat-form-field>
 
@@ -354,7 +353,7 @@ export class RegisterComponent implements OnInit {
         Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/)
       ]],
       confirmPassword: ['', [Validators.required]],
-      platformId: ['', [Validators.required]]
+      platformIds: [[], [Validators.required]]
     }, { validators: this.passwordMatchValidator });
   }
 
