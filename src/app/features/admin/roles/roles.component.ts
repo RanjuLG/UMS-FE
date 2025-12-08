@@ -66,6 +66,13 @@ import { RolePermissionsDialogComponent } from './role-permissions-dialog.compon
               <td mat-cell *matCellDef="let role">{{ role.description }}</td>
             </ng-container>
 
+            <ng-container matColumnDef="platform">
+              <th mat-header-cell *matHeaderCellDef>Platform</th>
+              <td mat-cell *matCellDef="let role">
+                <mat-chip class="platform-chip">{{ role.platformName }}</mat-chip>
+              </td>
+            </ng-container>
+
             <ng-container matColumnDef="isActive">
               <th mat-header-cell *matHeaderCellDef>Status</th>
               <td mat-cell *matCellDef="let role">
@@ -157,12 +164,20 @@ import { RolePermissionsDialogComponent } from './role-permissions-dialog.compon
       background-color: #f44336 !important;
       color: white;
     }
+
+    mat-chip.platform-chip {
+      background-color: #f0fdf4 !important;
+      color: #16a34a !important;
+      border: 1px solid #bbf7d0;
+      font-size: 12px;
+      font-weight: 500;
+    }
   `]
 })
 export class RolesComponent implements OnInit {
   roles = signal<Role[]>([]);
   loading = signal(true);
-  displayedColumns = ['roleId', 'name', 'description', 'isActive', 'actions'];
+  displayedColumns = ['roleId', 'name', 'description', 'platform', 'isActive', 'actions'];
 
   constructor(
     private roleService: RoleService,

@@ -24,7 +24,7 @@ import { AuthService } from '../../../core/services/auth.service';
     MatButtonModule,
     MatIconModule,
     MatSnackBarModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
   ],
   template: `
     <div class="login-container">
@@ -35,53 +35,55 @@ import { AuthService } from '../../../core/services/auth.service';
           </mat-card-title>
           <mat-card-subtitle>Sign in to continue</mat-card-subtitle>
         </mat-card-header>
-        
+
         <mat-card-content>
           <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Email</mat-label>
-              <input matInput type="email" formControlName="email" placeholder="Enter your email">
+              <input matInput type="email" formControlName="email" placeholder="Enter your email" />
               <mat-icon matPrefix>email</mat-icon>
-              @if (loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched) {
-                <mat-error>Email is required</mat-error>
-              }
-              @if (loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched) {
-                <mat-error>Please enter a valid email</mat-error>
+              @if (loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched)
+              {
+              <mat-error>Email is required</mat-error>
+              } @if (loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched) {
+              <mat-error>Please enter a valid email</mat-error>
               }
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="full-width">
               <mat-label>Password</mat-label>
-              <input 
-                matInput 
-                [type]="hidePassword() ? 'password' : 'text'" 
-                formControlName="password" 
-                placeholder="Enter your password">
+              <input
+                matInput
+                [type]="hidePassword() ? 'password' : 'text'"
+                formControlName="password"
+                placeholder="Enter your password"
+              />
               <mat-icon matPrefix>lock</mat-icon>
-              <button 
-                mat-icon-button 
-                matSuffix 
-                type="button" 
+              <button
+                mat-icon-button
+                matSuffix
+                type="button"
                 (click)="hidePassword.set(!hidePassword())"
-                [attr.aria-label]="'Hide password'">
-                <mat-icon>{{hidePassword() ? 'visibility_off' : 'visibility'}}</mat-icon>
+                [attr.aria-label]="'Hide password'"
+              >
+                <mat-icon>{{ hidePassword() ? 'visibility_off' : 'visibility' }}</mat-icon>
               </button>
-              @if (loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched) {
-                <mat-error>Password is required</mat-error>
+              @if (loginForm.get('password')?.hasError('required') &&
+              loginForm.get('password')?.touched) {
+              <mat-error>Password is required</mat-error>
               }
             </mat-form-field>
 
-            <button 
-              mat-raised-button 
-              color="primary" 
-              type="submit" 
+            <button
+              mat-raised-button
+              color="primary"
+              type="submit"
               class="full-width submit-button"
-              [disabled]="loading() || loginForm.invalid">
+              [disabled]="loading() || loginForm.invalid"
+            >
               @if (loading()) {
-                <mat-spinner diameter="20"></mat-spinner>
-              } @else {
-                Sign In
-              }
+              <mat-spinner diameter="20"></mat-spinner>
+              } @else { Sign In }
             </button>
           </form>
         </mat-card-content>
@@ -94,88 +96,153 @@ import { AuthService } from '../../../core/services/auth.service';
       </mat-card>
     </div>
   `,
-  styles: [`
-    .login-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      padding: 20px;
-    }
+  styles: [
+    `
+      .login-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+        padding: 20px;
+        position: relative;
+        overflow: hidden;
+      }
 
-    .login-card {
-      width: 100%;
-      max-width: 450px;
-      padding: 20px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    }
+      .login-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(
+          circle at 20% 50%,
+          rgba(59, 130, 246, 0.15) 0%,
+          transparent 50%
+        );
+        pointer-events: none;
+      }
 
-    mat-card-header {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 30px;
-    }
+      .login-card {
+        width: 100%;
+        max-width: 440px;
+        padding: 32px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+        background: white;
+        position: relative;
+        z-index: 1;
+        border: 1px solid rgba(226, 232, 240, 0.8);
+      }
 
-    h1 {
-      font-size: 28px;
-      font-weight: 600;
-      margin: 0;
-      color: #333;
-      text-align: center;
-    }
+      mat-card-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 32px;
+        padding: 0;
+      }
 
-    mat-card-subtitle {
-      margin-top: 8px;
-      font-size: 16px;
-      color: #666;
-    }
+      h1 {
+        font-size: 28px;
+        font-weight: 700;
+        margin: 0;
+        color: #3b82f6;
+        text-align: center;
+        letter-spacing: -0.5px;
+      }
 
-    mat-card-content {
-      padding: 20px 0;
-    }
+      mat-card-subtitle {
+        margin-top: 8px;
+        font-size: 15px;
+        color: #64748b;
+        font-weight: 400;
+      }
 
-    .full-width {
-      width: 100%;
-      margin-bottom: 16px;
-    }
+      mat-card-content {
+        padding: 0;
+      }
 
-    .submit-button {
-      height: 48px;
-      font-size: 16px;
-      font-weight: 500;
-      margin-top: 8px;
-    }
+      .full-width {
+        width: 100%;
+        margin-bottom: 20px;
+      }
 
-    mat-card-footer {
-      padding: 20px 16px;
-      border-top: 1px solid #e0e0e0;
-    }
+      ::ng-deep .login-card .mat-mdc-form-field {
+        font-size: 15px;
+      }
 
-    .footer-links {
-      text-align: center;
-    }
+      ::ng-deep .login-card .mat-mdc-text-field-wrapper {
+        background-color: #f8fafc;
+      }
 
-    .footer-links p {
-      margin: 0;
-      color: #666;
-    }
+      ::ng-deep .login-card .mat-mdc-form-field:hover .mat-mdc-text-field-wrapper {
+        background-color: #f1f5f9;
+      }
 
-    .footer-links a {
-      color: #667eea;
-      text-decoration: none;
-      font-weight: 500;
-    }
+      ::ng-deep .login-card .mat-icon {
+        color: #64748b;
+      }
 
-    .footer-links a:hover {
-      text-decoration: underline;
-    }
+      .submit-button {
+        height: 48px;
+        font-size: 15px;
+        font-weight: 600;
+        margin-top: 8px;
+        background-color: #3b82f6;
+        box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.5), 0 2px 4px -1px rgba(59, 130, 246, 0.3);
+        transition: all 0.3s ease;
+        letter-spacing: 0.5px;
+      }
 
-    mat-spinner {
-      margin: 0 auto;
-    }
-  `]
+      .submit-button:hover:not(:disabled) {
+        background-color: #2563eb;
+        box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.6), 0 4px 6px -2px rgba(59, 130, 246, 0.4);
+        transform: translateY(-2px);
+      }
+
+      .submit-button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      mat-card-footer {
+        padding: 24px 0 0 0;
+        border-top: 1px solid #e2e8f0;
+        margin-top: 24px;
+      }
+
+      .footer-links {
+        text-align: center;
+      }
+
+      .footer-links p {
+        margin: 0;
+        color: #64748b;
+        font-size: 14px;
+      }
+
+      .footer-links a {
+        color: #3b82f6;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.2s ease;
+      }
+
+      .footer-links a:hover {
+        color: #2563eb;
+        text-decoration: underline;
+      }
+
+      mat-spinner {
+        margin: 0 auto;
+      }
+
+      ::ng-deep .login-card .mat-mdc-form-field-focus-overlay {
+        background-color: transparent;
+      }
+    `,
+  ],
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -190,7 +257,7 @@ export class LoginComponent {
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]]
+      password: ['', [Validators.required]],
     });
   }
 
@@ -200,18 +267,22 @@ export class LoginComponent {
       this.authService.login(this.loginForm.value).subscribe({
         next: (response) => {
           this.loading.set(false);
-          if (response.access_token) {
-            this.snackBar.open('Login successful!', 'Close', { duration: 3000 });
-            this.router.navigate(['/admin']);
+          if (response.success && response.accessToken) {
+            this.snackBar.open(response.message || 'Login successful!', 'Close', {
+              duration: 3000,
+            });
+            this.router.navigate(['/dashboard']);
           } else {
-            this.snackBar.open('Login failed - no token received', 'Close', { duration: 5000 });
+            this.snackBar.open(response.message || 'Login failed - no token received', 'Close', {
+              duration: 5000,
+            });
           }
         },
         error: (error) => {
           this.loading.set(false);
-          const message = error.error?.error_description || error.error?.message || 'Login failed. Please check your credentials.';
+          const message = error.error?.message || 'Login failed. Please check your credentials.';
           this.snackBar.open(message, 'Close', { duration: 5000 });
-        }
+        },
       });
     }
   }

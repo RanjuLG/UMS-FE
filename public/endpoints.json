@@ -5,7 +5,12 @@
     "userInfo": "/api/auth/me",
     "login": "/api/auth/login",
     "register": "/api/auth/register",
-    "logout": "/api/auth/logout"
+    "logout": "/api/auth/logout",
+    "refresh": "/api/auth/refresh",
+    "revokeAll": "/api/auth/revoke-all"
+  },
+  "user": {
+    "myPermissions": "/api/users/me/permissions"
   },
   "admin": {
     "users": {
@@ -16,7 +21,8 @@
       "delete": "/api/admin/users/{id}",
       "changePassword": "/api/admin/users/{id}/change-password",
       "assignRole": "/api/admin/users/{userId}/roles/{roleId}",
-      "removeRole": "/api/admin/users/{userId}/roles/{roleId}"
+      "removeRole": "/api/admin/users/{userId}/roles/{roleId}",
+      "getPermissions": "/api/admin/users/{userId}/permissions"
     },
     "roles": {
       "list": "/api/admin/roles",
@@ -26,7 +32,9 @@
       "delete": "/api/admin/roles/{id}",
       "getPermissions": "/api/admin/roles/{roleId}/permissions",
       "assignPermission": "/api/admin/roles/{roleId}/permissions/{permissionId}",
-      "removePermission": "/api/admin/roles/{roleId}/permissions/{permissionId}"
+      "removePermission": "/api/admin/roles/{roleId}/permissions/{permissionId}",
+      "assignRoleToUser": "/api/admin/roles/assign",
+      "removeRoleFromUser": "/api/admin/roles/remove"
     },
     "permissions": {
       "list": "/api/admin/permissions",

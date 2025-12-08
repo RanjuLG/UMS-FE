@@ -29,62 +29,65 @@ interface DashboardStats {
   ],
   template: `
     <div class="dashboard">
-      <h1>Dashboard</h1>
-      <p class="subtitle">Welcome to the User Management System</p>
+      <h1>UMS Dashboard</h1>
+      <p class="subtitle">User Management System Administration</p>
 
       @if (loading()) {
         <div class="loading">
           <mat-spinner></mat-spinner>
         </div>
       } @else {
-        <div class="stats-grid">
-          <mat-card class="stat-card users" routerLink="/admin/users">
-            <mat-card-content>
-              <div class="stat-icon">
-                <mat-icon>people</mat-icon>
-              </div>
-              <div class="stat-info">
-                <div class="stat-value">{{ stats().users }}</div>
-                <div class="stat-label">Total Users</div>
-              </div>
-            </mat-card-content>
-          </mat-card>
+        <div class="stats-section">
+          <h2>System Statistics</h2>
+          <div class="stats-grid">
+            <mat-card class="stat-card users" routerLink="/admin/users">
+              <mat-card-content>
+                <div class="stat-icon">
+                  <mat-icon>people</mat-icon>
+                </div>
+                <div class="stat-info">
+                  <div class="stat-value">{{ stats().users }}</div>
+                  <div class="stat-label">Total Users</div>
+                </div>
+              </mat-card-content>
+            </mat-card>
 
-          <mat-card class="stat-card roles" routerLink="/admin/roles">
-            <mat-card-content>
-              <div class="stat-icon">
-                <mat-icon>admin_panel_settings</mat-icon>
-              </div>
-              <div class="stat-info">
-                <div class="stat-value">{{ stats().roles }}</div>
-                <div class="stat-label">Total Roles</div>
-              </div>
-            </mat-card-content>
-          </mat-card>
+            <mat-card class="stat-card roles" routerLink="/admin/roles">
+              <mat-card-content>
+                <div class="stat-icon">
+                  <mat-icon>admin_panel_settings</mat-icon>
+                </div>
+                <div class="stat-info">
+                  <div class="stat-value">{{ stats().roles }}</div>
+                  <div class="stat-label">Total Roles</div>
+                </div>
+              </mat-card-content>
+            </mat-card>
 
-          <mat-card class="stat-card permissions" routerLink="/admin/permissions">
-            <mat-card-content>
-              <div class="stat-icon">
-                <mat-icon>verified_user</mat-icon>
-              </div>
-              <div class="stat-info">
-                <div class="stat-value">{{ stats().permissions }}</div>
-                <div class="stat-label">Total Permissions</div>
-              </div>
-            </mat-card-content>
-          </mat-card>
+            <mat-card class="stat-card permissions" routerLink="/admin/permissions">
+              <mat-card-content>
+                <div class="stat-icon">
+                  <mat-icon>verified_user</mat-icon>
+                </div>
+                <div class="stat-info">
+                  <div class="stat-value">{{ stats().permissions }}</div>
+                  <div class="stat-label">Total Permissions</div>
+                </div>
+              </mat-card-content>
+            </mat-card>
 
-          <mat-card class="stat-card platforms" routerLink="/admin/platforms">
-            <mat-card-content>
-              <div class="stat-icon">
-                <mat-icon>apps</mat-icon>
-              </div>
-              <div class="stat-info">
-                <div class="stat-value">{{ stats().platforms }}</div>
-                <div class="stat-label">Total Platforms</div>
-              </div>
-            </mat-card-content>
-          </mat-card>
+            <mat-card class="stat-card platforms" routerLink="/admin/platforms">
+              <mat-card-content>
+                <div class="stat-icon">
+                  <mat-icon>apps</mat-icon>
+                </div>
+                <div class="stat-info">
+                  <div class="stat-value">{{ stats().platforms }}</div>
+                  <div class="stat-label">Total Platforms</div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
         </div>
 
         <div class="quick-actions">
@@ -127,15 +130,17 @@ interface DashboardStats {
 
     h1 {
       font-size: 32px;
-      font-weight: 500;
+      font-weight: 700;
       margin: 0 0 8px 0;
-      color: #333;
+      color: #3b82f6;
+      letter-spacing: -0.5px;
     }
 
     .subtitle {
       font-size: 16px;
-      color: #666;
+      color: #64748b;
       margin: 0 0 32px 0;
+      font-weight: 400;
     }
 
     .loading {
@@ -145,61 +150,215 @@ interface DashboardStats {
       min-height: 400px;
     }
 
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 24px;
-      margin-bottom: 40px;
+    /* Platforms Section */
+    .platforms-section {
+      margin-bottom: 48px;
     }
 
-    .stat-card {
+    .platforms-section h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0 0 8px 0;
+      color: #1e293b;
+      letter-spacing: -0.25px;
+    }
+
+    .section-subtitle {
+      font-size: 14px;
+      color: #64748b;
+      margin: 0 0 24px 0;
+    }
+
+    .platforms-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .platform-card {
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      border: 2px solid #e2e8f0;
+      background: white;
+      position: relative;
+      overflow: hidden;
     }
 
-    .stat-card:hover {
+    .platform-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: #3b82f6;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .platform-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .platform-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.08);
+      border-color: #3b82f6;
     }
 
-    .stat-card mat-card-content {
+    .platform-card mat-card-content {
       display: flex;
       align-items: center;
       padding: 24px !important;
+      gap: 16px;
     }
 
-    .stat-icon {
+    .platform-icon {
       width: 64px;
       height: 64px;
       border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-right: 20px;
+      flex-shrink: 0;
     }
 
-    .stat-icon mat-icon {
+    .platform-icon mat-icon {
       font-size: 32px;
       width: 32px;
       height: 32px;
       color: white;
     }
 
+    .platform-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .platform-name {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .platform-description {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.4;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .platform-arrow {
+      flex-shrink: 0;
+      opacity: 0.5;
+      transition: all 0.3s ease;
+    }
+
+    .platform-card:hover .platform-arrow {
+      opacity: 1;
+      transform: translateX(4px);
+    }
+
+    .platform-arrow mat-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+      color: #64748b;
+    }
+
+    /* Stats Section */
+    .stats-section {
+      margin-bottom: 48px;
+    }
+
+    .stats-section h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0 0 24px 0;
+      color: #1e293b;
+      letter-spacing: -0.25px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .stat-card {
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      border: 1px solid #e2e8f0;
+      background: white;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.08);
+      border-color: transparent;
+    }
+
+    .stat-card mat-card-content {
+      display: flex;
+      align-items: center;
+      padding: 28px !important;
+    }
+
+    .stat-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-icon::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: inherit;
+      opacity: 0.1;
+    }
+
+    .stat-icon mat-icon {
+      font-size: 36px;
+      width: 36px;
+      height: 36px;
+      color: white;
+      position: relative;
+      z-index: 1;
+    }
+
     .stat-card.users .stat-icon {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: #3b82f6;
     }
 
     .stat-card.roles .stat-icon {
-      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      background: #06b6d4;
     }
 
     .stat-card.permissions .stat-icon {
-      background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      background: #06b6d4;
     }
 
     .stat-card.platforms .stat-icon {
-      background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+      background: #10b981;
     }
 
     .stat-info {
@@ -207,54 +366,59 @@ interface DashboardStats {
     }
 
     .stat-value {
-      font-size: 36px;
-      font-weight: 600;
-      color: #333;
+      font-size: 40px;
+      font-weight: 700;
+      color: #1e293b;
       line-height: 1;
       margin-bottom: 8px;
+      letter-spacing: -1px;
     }
 
     .stat-label {
       font-size: 14px;
-      color: #666;
+      color: #64748b;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      font-weight: 600;
     }
 
     .quick-actions {
-      margin-top: 40px;
+      margin-top: 48px;
     }
 
     .quick-actions h2 {
       font-size: 24px;
-      font-weight: 500;
+      font-weight: 700;
       margin: 0 0 24px 0;
-      color: #333;
+      color: #1e293b;
+      letter-spacing: -0.25px;
     }
 
     .actions-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
+      gap: 20px;
     }
 
     .action-card {
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      border: 1px solid #e2e8f0;
+      background: white;
     }
 
     .action-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-      background-color: #f5f5f5;
+      transform: translateY(-4px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.08);
+      border-color: #3b82f6;
     }
 
     .action-card mat-card-content {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 24px !important;
+      padding: 28px !important;
       text-align: center;
     }
 
@@ -262,14 +426,28 @@ interface DashboardStats {
       font-size: 48px;
       width: 48px;
       height: 48px;
-      color: #667eea;
+      color: #3b82f6;
       margin-bottom: 12px;
     }
 
     .action-card span {
-      font-size: 16px;
-      font-weight: 500;
-      color: #333;
+      font-size: 15px;
+      font-weight: 600;
+      color: #1e293b;
+    }
+
+    @media (max-width: 768px) {
+      .platforms-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
   `]
 })

@@ -1,4 +1,4 @@
-import { Component, Inject, signal } from '@angular/core';
+import { Component, Inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialogModule } from '@angular/material/dialog';
@@ -6,10 +6,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RoleService } from '../../../core/services/role.service';
+import { PlatformService } from '../../../core/services/platform.service';
 import { Role } from '../../../core/models/role.model';
+import { Platform } from '../../../core/models/platform.model';
 
 @Component({
   selector: 'app-role-dialog',
@@ -22,6 +25,7 @@ import { Role } from '../../../core/models/role.model';
     MatInputModule,
     MatButtonModule,
     MatSlideToggleModule,
+    MatSelectModule,
     MatProgressSpinnerModule
   ],
   template: `
@@ -43,6 +47,25 @@ import { Role } from '../../../core/models/role.model';
             <mat-error>Description is required</mat-error>
           }
         </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Platform</mat-label>
+          <mat-select formControlName="platformId" [disabled]="data.mode === 'edit'">
+            <mat-option value="">-- Select Platform --</mat-option>
+            @for (platform of platforms(); track platform.platformId) {
+              <mat-option [value]="platform.platformId">{{ platform.name }}</mat-option>
+            }
+          </mat-select>
+          @if (roleForm.get('platformId')?.hasError('required')) {
+            <mat-error>Platform is required</mat-error>
+          }
+        </mat-form-field>
+
+        @if (data.mode === 'edit') {
+          <p class="platform-warning">
+            ⚠️ Platform cannot be changed after role creation
+          </p>
+        }
 
         @if (data.mode === 'edit') {
           <mat-slide-toggle formControlName="isActive">
@@ -77,19 +100,29 @@ import { Role } from '../../../core/models/role.model';
       margin-bottom: 16px;
     }
 
+    .platform-warning {
+      font-size: 12px;
+      color: #ef6c00;
+      margin: -8px 0 16px 0;
+      font-style: italic;
+    }
+
     mat-spinner {
       display: inline-block;
       margin: 0 auto;
     }
   `]
 })
-export class RoleDialogComponent {
+export class RoleDialogComponent implements OnInit {
   roleForm: FormGroup;
   saving = signal(false);
+  platforms = signal<Platform[]>([]);
+  loadingPlatforms = signal(true);
 
   constructor(
     private fb: FormBuilder,
     private roleService: RoleService,
+    private platformService: PlatformService,
     private snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<RoleDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { mode: 'create' | 'edit', role?: Role }
@@ -97,16 +130,35 @@ export class RoleDialogComponent {
     this.roleForm = this.createForm();
   }
 
+  ngOnInit(): void {
+    this.loadPlatforms();
+  }
+
+  loadPlatforms(): void {
+    this.platformService.getPlatforms().subscribe({
+      next: (platforms) => {
+        this.platforms.set(platforms);
+        this.loadingPlatforms.set(false);
+      },
+      error: (error) => {
+        this.snackBar.open('Failed to load platforms', 'Close', { duration: 3000 });
+        this.loadingPlatforms.set(false);
+      }
+    });
+  }
+
   createForm(): FormGroup {
     if (this.data.mode === 'create') {
       return this.fb.group({
         name: ['', [Validators.required]],
-        description: ['', [Validators.required]]
+        description: ['', [Validators.required]],
+        platformId: ['', [Validators.required]]
       });
     } else {
       return this.fb.group({
         name: [this.data.role?.name, [Validators.required]],
         description: [this.data.role?.description, [Validators.required]],
+        platformId: [this.data.role?.platformId, [Validators.required]],
         isActive: [this.data.role?.isActive ?? true]
       });
     }

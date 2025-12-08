@@ -1,3 +1,8 @@
+export interface PlatformDto {
+  platformId: number;
+  name: string;
+}
+
 export interface Platform {
   platformId: number;
   name: string;

@@ -31,6 +31,13 @@ import { Role } from '../../../core/models/role.model';
           <mat-spinner></mat-spinner>
         </div>
       } @else {
+        <div class="platform-info">
+          <strong>Platforms:</strong> 
+          @for (platform of data.user.platforms; track platform.platformId) {
+            <span class="platform-badge">{{ platform.name }}</span>
+          }
+          <p class="info-text">Only roles from user's platforms can be assigned</p>
+        </div>
         <mat-list>
           @for (role of roles(); track role.roleId) {
             <mat-list-item>
@@ -44,6 +51,11 @@ import { Role } from '../../../core/models/role.model';
                 </div>
               </mat-checkbox>
             </mat-list-item>
+          }
+          @if (roles().length === 0) {
+            <div class="no-roles">
+              No roles available for the user's platforms
+            </div>
           }
         </mat-list>
       }
@@ -64,6 +76,41 @@ import { Role } from '../../../core/models/role.model';
       justify-content: center;
       align-items: center;
       min-height: 200px;
+    }
+
+    .platform-info {
+      background-color: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 4px;
+      padding: 12px;
+      margin-bottom: 16px;
+      color: #15803d;
+    }
+
+    .platform-badge {
+      display: inline-block;
+      background-color: #dcfce7;
+      color: #16a34a;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-left: 8px;
+      margin-right: 4px;
+      border: 1px solid #bbf7d0;
+    }
+
+    .info-text {
+      font-size: 12px;
+      margin: 4px 0 0 0;
+      color: #16a34a;
+    }
+
+    .no-roles {
+      text-align: center;
+      padding: 32px;
+      color: #666;
+      font-style: italic;
     }
 
     mat-list-item {
@@ -118,10 +165,18 @@ export class UserRolesDialogComponent implements OnInit {
       userDetails: this.userService.getUserById(this.data.user.userId)
     }).subscribe({
       next: (result) => {
-        this.roles.set(result.roles);
+        // Get all platform IDs for the user
+        const userPlatformIds = this.data.user.platforms.map(p => p.platformId);
+        
+        // Filter roles to only show those from the user's platforms
+        const platformRoles = result.roles.filter(
+          role => userPlatformIds.includes(role.platformId)
+        );
+        this.roles.set(platformRoles);
+        
         // Map role names to role IDs
         const userRoleNames = result.userDetails.roles || [];
-        const assignedRoleIds = result.roles
+        const assignedRoleIds = platformRoles
           .filter(role => userRoleNames.includes(role.name))
           .map(role => role.roleId);
         this.userRoleIds.set(assignedRoleIds);
