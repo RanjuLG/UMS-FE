@@ -51,6 +51,30 @@ body {
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
+/* Dialog Title Enhancement */
+.mat-mdc-dialog-title,
+h2[mat-dialog-title] {
+  color: #3b82f6 !important;
+  font-weight: 700 !important;
+  font-size: 24px !important;
+  letter-spacing: -0.5px !important;
+  margin-bottom: 24px !important;
+  padding-bottom: 16px !important;
+  border-bottom: 2px solid #e2e8f0 !important;
+}
+
+/* Dialog Content */
+.mat-mdc-dialog-content {
+  padding: 24px !important;
+}
+
+/* Dialog Actions */
+.mat-mdc-dialog-actions {
+  padding: 16px 24px !important;
+  background-color: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+}
+
 .mat-mdc-card {
   border-radius: 12px;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
