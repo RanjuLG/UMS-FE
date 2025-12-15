@@ -1,6 +1,15 @@
 {
   "appName": "User Management System",
   "version": "1.0.0",
+  "firebase": {
+    "apiKey": "AIzaSyArbJZKlQUBDXCR9PpLgJ8PZp7kXQ2VgL4",
+    "authDomain": "usermanagementsystem-9cfeb.firebaseapp.com",
+    "projectId": "usermanagementsystem-9cfeb",
+    "storageBucket": "usermanagementsystem-9cfeb.firebasestorage.app",
+    "messagingSenderId": "178009294840",
+    "appId": "1:178009294840:web:a40aee8e53bbe3d497b80d",
+    "measurementId": "G-Q33CY8Q4WS"
+  },
   "oidc": {
     "authority": "http://localhost:5184",
     "clientId": "demo_platform",

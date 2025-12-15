@@ -1,7 +1,7 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { Observable, tap, BehaviorSubject } from 'rxjs';
+import { Observable, tap, BehaviorSubject, from, switchMap } from 'rxjs';
 import { ConfigService } from './config.service';
 import { 
   LoginRequest, 
@@ -10,8 +10,11 @@ import {
   User, 
   RefreshTokenRequest, 
   TokenResponse, 
-  LogoutRequest 
+  LogoutRequest,
+  ExternalLoginRequest,
+  ExternalLoginResponse
 } from '../models/user.model';
+import { Auth, signInWithPopup, GoogleAuthProvider, signOut } from '@angular/fire/auth';
 
 interface PlatformInToken {
   platformId: number;
@@ -47,6 +50,8 @@ export class AuthService {
   private accessTokenKey = 'accessToken';
   private refreshTokenKey = 'refreshToken';
   private userKey = 'user';
+
+  private auth = inject(Auth);
 
   constructor(
     private http: HttpClient,
@@ -97,6 +102,57 @@ export class AuthService {
   register(request: RegisterRequest): Observable<User> {
     const url = this.config.buildUrl(this.config.getEndpoints().auth.register);
     return this.http.post<User>(url, request);
+  }
+
+  /**
+   * Login with Google using Firebase OAuth
+   */
+  loginWithGoogle(clientId?: string): Observable<ExternalLoginResponse> {
+    const provider = new GoogleAuthProvider();
+    
+    return from(signInWithPopup(this.auth, provider)).pipe(
+      switchMap(async (result) => {
+        // Get the Firebase ID token
+        const firebaseToken = await result.user.getIdToken();
+        return firebaseToken;
+      }),
+      switchMap((firebaseToken) => {
+        // Send the token to your backend
+        return this.externalLogin({ firebaseToken, clientId });
+      })
+    );
+  }
+
+  /**
+   * External login - send OAuth token to backend
+   */
+  private externalLogin(request: ExternalLoginRequest): Observable<ExternalLoginResponse> {
+    const url = this.config.buildUrl(this.config.getEndpoints().auth.externalLogin);
+    
+    return this.http.post<ExternalLoginResponse>(url, request).pipe(
+      tap(response => {
+        if (response.success && response.accessToken) {
+          this.setToken(response.accessToken);
+          if (response.refreshToken) {
+            this.setRefreshToken(response.refreshToken);
+          }
+          if (response.user) {
+            this.setUser(response.user);
+          }
+        }
+      })
+    );
+  }
+
+  /**
+   * Sign out from Firebase
+   */
+  async signOutFromFirebase(): Promise<void> {
+    try {
+      await signOut(this.auth);
+    } catch (error) {
+      console.error('Firebase sign out error:', error);
+    }
   }
 
   /**

@@ -79,3 +79,18 @@ export interface UpdateUserRequest {
   email: string;
   isActive: boolean;
 }
+
+export interface ExternalLoginRequest {
+  firebaseToken: string;
+  clientId?: string;
+}
+
+export interface ExternalLoginResponse {
+  success: boolean;
+  message: string;
+  accessToken?: string;
+  refreshToken?: string;
+  expiresIn: number;
+  user?: User;
+  isNewUser: boolean;
+}

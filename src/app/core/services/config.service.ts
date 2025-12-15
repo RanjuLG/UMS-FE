@@ -10,6 +10,7 @@ export interface EndpointsConfig {
     logout: string;
     refresh: string;
     revokeAll: string;
+    externalLogin: string;
   };
   user?: {
     myPermissions: string;
@@ -22,9 +23,20 @@ export interface EndpointsConfig {
   };
 }
 
+export interface FirebaseConfig {
+  apiKey: string;
+  authDomain: string;
+  projectId: string;
+  storageBucket: string;
+  messagingSenderId: string;
+  appId: string;
+  measurementId?: string;
+}
+
 export interface AppConfig {
   appName: string;
   version: string;
+  firebase: FirebaseConfig;
   oidc: {
     authority: string;
     clientId: string;
@@ -94,5 +106,9 @@ export class ConfigService {
     }
 
     return `${baseUrl}${url}`;
+  }
+
+  getFirebaseConfig(): FirebaseConfig {
+    return this.getConfig().firebase;
   }
 }

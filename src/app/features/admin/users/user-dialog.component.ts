@@ -84,7 +84,7 @@ import { Platform } from '../../../core/models/platform.model';
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Platforms</mat-label>
-          <mat-select formControlName="platformIds" multiple [disabled]="data.mode === 'edit'">
+          <mat-select formControlName="platformIds" multiple>
             @for (platform of platforms(); track platform.platformId) {
               <mat-option [value]="platform.platformId">{{ platform.name }}</mat-option>
             }
@@ -93,12 +93,6 @@ import { Platform } from '../../../core/models/platform.model';
             <mat-error>At least one platform is required</mat-error>
           }
         </mat-form-field>
-
-        @if (data.mode === 'edit') {
-          <p class="platform-warning">
-            ⚠️ Platforms cannot be changed after user creation
-          </p>
-        }
 
         @if (data.mode === 'edit') {
           <mat-slide-toggle formControlName="isActive">
@@ -141,13 +135,6 @@ import { Platform } from '../../../core/models/platform.model';
 
     mat-slide-toggle {
       margin-bottom: 16px;
-    }
-
-    .platform-warning {
-      font-size: 12px;
-      color: #ef6c00;
-      margin: -8px 0 16px 0;
-      font-style: italic;
     }
 
     mat-spinner {
